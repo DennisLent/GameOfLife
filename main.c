@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <getopt.h>
 
-void usage(){
+void usage(char *argv[]){
     printf("Usage: \n"
             "-h: show help \n"
             "\n"
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]){
     char type;
 
     int opt;
-    while((opt = getopt(argc, argv, "h:d:t")) != -1){
+    while((opt = getopt(argc, argv, "hd:t:")) != -1){
         switch (opt) {
             case 'd':
                 dimension = atoi(optarg);
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
             case 't':
                 type = *optarg;
             case 'h':
-                usage();
+                usage(argv);
         }
     }
 
