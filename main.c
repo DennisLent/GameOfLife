@@ -11,7 +11,7 @@ void usage(char *argv[]){
             "\n"
             "Arguments for selection: \n"
             "-d D: Dimension of the field (DxD) \n"
-            "-t T: Name of the Pattern you want to use \n"
+            "-p P: Name of the Pattern you want to use \n"
             "Available patterns: \n");
     availableFiles("../files");
     exit(0);
@@ -19,20 +19,75 @@ void usage(char *argv[]){
 
 int main(int argc, char *argv[]){
     int dimension;
-    char type;
+    char pattern;
 
     int opt;
-    while((opt = getopt(argc, argv, "hd:t:")) != -1){
+    while((opt = getopt(argc, argv, "hd:p:")) != -1){
         switch (opt) {
             case 'd':
                 dimension = atoi(optarg);
                 break;
-            case 't':
-                type = *optarg;
+            case 'p':
+                pattern = *optarg;
+                break;
             case 'h':
+                usage(argv);
+                break;
+            default:
+                fprintf(stderr, "Invalid Option: %c \n", opt);
                 usage(argv);
         }
     }
+
+    if(dimension == 0 || pattern == '\0'){
+        printf(stderr, "Dimension and pattern are required");
+        usage(argv);
+    }
+
+    //SDL initializing
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        fprintf(stderr, "SDL initialization failed: %s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_Window *window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimension * 10, dimension * 10, SDL_WINDOW_SHOWN);
+    if (!window) {
+        fprintf(stderr, "SDL window creation failed: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        fprintf(stderr, "SDL renderer creation failed: %s\n", SDL_GetError());
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+    Grid grid = initializeGrid(dimension);
+    int offset = floor(dimension/2);
+    readLifeFile(pattern, &grid, offset, offset);
+
+    //main loop
+    int running = 1;
+    while(running){
+        renderGrid(&renderer, &grid);
+        updateGrid(&grid);
+
+        //quit loop
+        SDL_Event key;
+        while(SDL_PollEvent(&key)){
+            if(key.type == SDL_QUIT){
+                running = 0;
+            }
+        }
+
+        SDL_Delay(100);
+    }
+
+    freeGrid(&grid);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
     return 0;
 }
