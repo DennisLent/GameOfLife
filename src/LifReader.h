@@ -9,4 +9,6 @@
 
 void readLifeFile(const char* filename, Grid* grid, int x_offset, int y_offset);
 
+void availableFiles(char *directory);
+
 #endif

@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
-#include <dirent.h>
-#include <string.h>
 
 void usage(char *argv[]){
     printf("Usage: \n"
@@ -13,23 +11,10 @@ void usage(char *argv[]){
             "\n"
             "Arguments for selection: \n"
             "-d D: Dimension of the field (DxD) \n"
-            "-t T: Type of pattern you want to use \n"
+            "-t T: Name of the Pattern you want to use \n"
             "Available patterns: \n");
-    availableFiles("/files");
+    availableFiles("../files");
     exit(0);
-}
-
-void availableFiles(char *directory){
-    DIR *d;
-    struct dirent *ent;
-
-    if(d = opendir(directory) != NULL){
-        while((ent = readdir(d)) != NULL){
-            printf("%s \n", ent->d_name);
-        }
-        closedir(d);
-    }
-        
 }
 
 int main(int argc, char *argv[]){

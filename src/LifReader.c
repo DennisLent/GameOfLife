@@ -2,6 +2,8 @@
 #include "LifReader.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <string.h>
 
 #define MAX_BUFFER 1000
 
@@ -20,7 +22,7 @@ void readLifeFile(const char* filename, Grid* grid, int x_offset, int y_offset){
         }
 
         //check coordinates
-        if(scanf(buffer, '#P %d &d', &x, &y) == 2){
+        if(sscanf(buffer, '#P %d %d', &x, &y) == 2){
             //starting coordinates
             x += x_offset;
             y += y_offset;
@@ -46,4 +48,17 @@ void readLifeFile(const char* filename, Grid* grid, int x_offset, int y_offset){
 
     fclose(file);
 
+}
+
+void availableFiles(char *directory){
+    DIR *d;
+    struct dirent *ent;
+
+    if((d = opendir(directory)) != NULL){
+        while((ent = readdir(d)) != NULL){
+            printf("%s \n", ent->d_name);
+        }
+        closedir(d);
+    }
+        
 }
