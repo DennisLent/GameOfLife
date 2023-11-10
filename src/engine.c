@@ -1,11 +1,11 @@
 #include "engine.h"
 #include <SDL2/SDL.h>
 
-typedef struct {
+struct Grid{
     int** cells;
     int width;
     int height;
-} Grid;
+};
 
 Grid initializeGrid(int dimension){
     Grid grid;

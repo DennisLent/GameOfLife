@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(GameOfLife)
 
-#Add source files
-file(GLOB ENGINE_SOURCES "src/*.c")
+set(CMAKE_C_STANDARD 11)
 
-#Add main file
-set(MAIN_SOURCE main.c)
+find_package(SDL2 REQUIRED)
 
-add_executable(GameOfLife ${ENGINE_SOURCES} ${MAIN_SOURCE})
+include_directories(${SDL2_INCLUDE_DIRS})
 
-target_include_directories(GameOfLife PRIVATE "src")
+add_executable(GameOfLife
+    src/engine.c
+    src/LifReader.c
+    main.c
+)
 
-target_link_libraries(GameOfLife PRIVATE m)
+target_link_libraries(GameOfLife ${SDL2_LIBRARIES})

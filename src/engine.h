@@ -10,9 +10,13 @@ typedef struct {
 } Grid;
 
 Grid initializeGrid(int dimension);
+
 int convolution(Grid* grid, int i, int j);
+
 void updateGrid(Grid* grid);
+
 void renderGrid(SDL_Renderer *renderer, Grid* grid);
+
 void freeGrid(Grid* grid);
 
 #endif /* ENGINE_H */
