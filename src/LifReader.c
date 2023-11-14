@@ -7,16 +7,20 @@
 
 #define MAX_BUFFER 1000
 
-void readLifeFile(const char* filename, Grid* grid, int x_offset, int y_offset){
-    FILE* file = fopen(filename, "r");
+void readLifeFile(const char* filepath, Grid* grid, int x_offset, int y_offset){
+
+    printf("Retrieving File at %s", filepath);
+
+    FILE* file = fopen(filepath, "r");
     if (file == NULL){
-        fprintf(stderr, "Could not open File %s \n", filename);
+        fprintf(stderr, "Could not open File\n");
         return;
     }
 
     char buffer[MAX_BUFFER];
     int x, y;
     while(fgets(buffer, MAX_BUFFER, file)){
+        
         if(buffer[0] == '#'){
             continue;
         }

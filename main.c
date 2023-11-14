@@ -19,7 +19,7 @@ void usage(char *argv[]){
 
 int main(int argc, char *argv[]){
     int dimension;
-    char pattern;
+    char pattern[1000];
 
     int opt;
     while((opt = getopt(argc, argv, "hd:p:")) != -1){
@@ -28,7 +28,8 @@ int main(int argc, char *argv[]){
                 dimension = atoi(optarg);
                 break;
             case 'p':
-                pattern = *optarg;
+                strncpy(pattern, optarg, 1000);
+                pattern[1000 - 1] = '\0';
                 break;
             case 'h':
                 usage(argv);
