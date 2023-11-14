@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
     }
 
     if(dimension == 0 || pattern == '\0'){
-        printf(stderr, "Dimension and pattern are required");
+        fprintf(stderr, "Dimension and pattern are required");
         usage(argv);
     }
 
@@ -72,9 +72,9 @@ int main(int argc, char *argv[]){
     //main loop
     int running = 1;
     while(running){
-        countAlive(&grid);
-        
-        renderGrid(&renderer, &grid);
+        //countAlive(&grid);
+
+        renderGrid(renderer, &grid);
         updateGrid(&grid);
 
         //quit loop
