@@ -19,39 +19,35 @@ void readLifeFile(const char* filepath, Grid* grid, int x_offset, int y_offset){
 
     char buffer[MAX_BUFFER];
     int x, y;
-    while(fgets(buffer, MAX_BUFFER, file)){
-        
-        if(buffer[0] == '#'){
+    int readingPattern = 0;
+
+    while (fgets(buffer, MAX_BUFFER, file)) {
+        if (buffer[0] == '#' && sscanf(buffer, "#P %d %d", &x, &y) == 2) {
+            //printf("Pattern start at coordinates: %d, %d\n", x, y);
+            readingPattern = 1;
             continue;
         }
 
-        //check coordinates
-        if(sscanf(buffer, '#P %d %d', &x, &y) == 2){
-            //starting coordinates
-            x += x_offset;
-            y += y_offset;
+        if (readingPattern) {
+            if (buffer[0] == '#' || buffer[0] == '\n') {
+                readingPattern = 0;
+                continue;
+            }
 
-            //coordinates used for global iteration
-            int X = x;
-            int Y = y;
-
-            while (fgets(buffer, MAX_BUFFER, file) && buffer[0] != '#'){
-                for(int i = 0; buffer[i] != '\0' && buffer[i] != '\n'; i++){
-                    if(buffer[i] == '*'){
-                        int x_cord = X + i;
-                        int y_cord = Y;
-                        if (x_cord >= 0 && x_cord < grid->width && y_cord >= 0 && y_cord < grid->height){
-                            grid->cells[x_cord][y_cord] = 1;
-                        }
+            for (int i = 0; buffer[i] != '\0' && buffer[i] != '\n'; i++) {
+                if (buffer[i] == '*') {
+                    int x_cord = x + x_offset + i;
+                    int y_cord = y + y_offset;
+                    if (x_cord >= 0 && x_cord < grid->width && y_cord >= 0 && y_cord < grid->height) {
+                        grid->cells[x_cord][y_cord] = 1;
                     }
                 }
-                Y++;
             }
+            y++;
         }
     }
 
     fclose(file);
-
 }
 
 void availableFiles(char *directory){

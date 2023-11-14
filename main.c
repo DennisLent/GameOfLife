@@ -67,10 +67,13 @@ int main(int argc, char *argv[]){
     Grid grid = initializeGrid(dimension);
     int offset = floor(dimension/2);
     readLifeFile(pattern, &grid, offset, offset);
+    //printGrid(&grid);
 
     //main loop
     int running = 1;
     while(running){
+        countAlive(&grid);
+        
         renderGrid(&renderer, &grid);
         updateGrid(&grid);
 
@@ -82,7 +85,7 @@ int main(int argc, char *argv[]){
             }
         }
 
-        SDL_Delay(100);
+        SDL_Delay(1000);
     }
 
     freeGrid(&grid);

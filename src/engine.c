@@ -115,3 +115,24 @@ void freeGrid(Grid* grid){
     free(grid->cells);
 }
 
+void printGrid(Grid* grid) {
+    for (int i = 0; i < grid->height; i++) {
+        for (int j = 0; j < grid->width; j++) {
+            printf("%d ", grid->cells[j][i]);
+        }
+        printf("\n");
+    }
+}
+
+void countAlive(Grid* grid) {
+    int alive = 0;
+    for (int i = 0; i < grid->height; i++) {
+        for (int j = 0; j < grid->width; j++) {
+            if (grid->cells[i][j] == 1){
+                alive++;
+            }
+        }
+        printf("alive cells: %d \n", alive);
+    }
+}
+

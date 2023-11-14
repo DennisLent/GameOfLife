@@ -19,4 +19,8 @@ void renderGrid(SDL_Renderer *renderer, Grid* grid);
 
 void freeGrid(Grid* grid);
 
+void printGrid(Grid* grid);
+
+void countAlive(Grid* grid);
+
 #endif /* ENGINE_H */
